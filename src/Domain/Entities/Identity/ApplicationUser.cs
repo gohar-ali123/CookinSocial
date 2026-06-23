@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Identity
+namespace Domain.Entities.Identity;
+
+public class ApplicationUser: IdentityUser
 {
-    internal class ApplicationUser: IdentityUser
-    {
-    }
 }
