@@ -1,4 +1,6 @@
+using Domain.Entities.Identity;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,14 @@ builder.Services.AddSwaggerGen();
 //For connecting to database using Entity Framework Core and SQL Server, we need to add the ApplicationDBContext to the services collection. This allows us to inject the context into our controllers or services where we need to interact with the database.
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//For adding Identity services. This allows us to use the built-in Identity features such as user registration, login, and role management (via userManager etc.). We also need to specify that we want to use Entity Framework Core for storing user information in the database.
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders(); //Required for generating tokens for password reset, email confirmation, etc.
+
+
+
 
 var app = builder.Build();
 
