@@ -16,8 +16,22 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+//For adding Swagger services. This allows us to generate API documentation and test our API endpoints using the Swagger UI.
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "CookinSocial API",
+        Version = "v1",
+        Description = "REST API for the CookinSocial social cooking platform.",
+        Contact = new OpenApiContact
+        {
+            Name = "Gohar Ali",
+            Url = new Uri("https://github.com/gohar-ali123")
+        }
+    });
+
+    //For adding JWT Bearer token authentication to Swagger. This allows us to test our API endpoints that require authentication.
     options.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme
         {
