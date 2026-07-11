@@ -28,14 +28,14 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
-    //[HttpPost("login")]
-    //public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
-    //{
-    //    var result = await _authService.LoginAsync(dto);
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
+    {
+        var result = await _authService.LoginAsync(dto);
 
-    //    if (!result.Success)
-    //        return Unauthorized(result);
+        if (!result.Success)
+            return Unauthorized(result);
 
-    //    return Ok(result);
-    //}
+        return Ok(result);
+    }
 }
