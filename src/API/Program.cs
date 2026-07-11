@@ -1,3 +1,5 @@
+using Application.Interfaces;
+using Application.Services;
 using Domain.Entities.Identity;
 using Infrastructure.Configuration;
 using Infrastructure.Persistence;
@@ -64,10 +66,23 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//For adding Identity services. This allows us to use the built-in Identity features such as user registration, login, and role management (via userManager etc.). We also need to specify that we want to use Entity Framework Core for storing user information in the database.
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDBContext>()
-    .AddDefaultTokenProviders(); //Required for generating tokens for password reset, email confirmation, etc.
+//For adding Identity services. This allows us to use the built-in Identity features such as user registration, login, and role management (via userManager etc.).
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    // Password policy
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+
+    // Lockout will be configured later
+
+    // Sign-in policy
+    options.SignIn.RequireConfirmedEmail = false; // Will flip to true once email confirmation endpoint exists
+})
+.AddEntityFrameworkStores<ApplicationDBContext>()
+.AddDefaultTokenProviders(); //Required for generating tokens for password reset, email confirmation, etc.
 
 //For strongly typed jwt settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
@@ -99,6 +114,9 @@ builder.Services.AddAuthentication(options =>
 //For adding authorization services. This allows us to use the built-in authorization features such as role-based or policy-based authorization.
 builder.Services.AddAuthorization();
 
+
+// Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
