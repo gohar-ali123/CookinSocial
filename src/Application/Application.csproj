@@ -10,9 +10,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+	<!-- For SignInManager to work in Application layer, need to reference the Microsoft.AspNetCore.App framework. This framework includes the necessary assemblies for ASP.NET Core applications, including authentication and identity management features. -->
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
 </Project>
